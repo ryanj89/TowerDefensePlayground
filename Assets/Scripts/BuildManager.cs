@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
-	private GameObject selectedTurret;  // Selected turret to build
+	private GameObject selectedTurret;          // Selected turret to build
 
-    public GameObject turretPrefab;     // Turret prefab
+    public GameObject turretPrefab;             // Turret prefab
+    public GameObject missileLauncherPrefab;    // Missile Launcher prefab
 
     // SINGLETON PATTERN
     public static BuildManager instance;
@@ -21,14 +22,15 @@ public class BuildManager : MonoBehaviour
         instance = this;    // Reference to self
     }
 
-    void Start()
-    {
-        selectedTurret = turretPrefab;
-    }
 
     // Public function to return selected turret
     public GameObject GetSelectedTurret()
     {
         return selectedTurret;
+    }
+
+    public void SetSelectedTurret(GameObject turret)
+    {
+        selectedTurret = turret;
     }
 }

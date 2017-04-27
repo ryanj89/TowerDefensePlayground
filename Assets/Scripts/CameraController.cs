@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
 		// Camera Down
 		if (Input.GetKey("s") || Input.mousePosition.y <= panCameraThreshold)
 		{
-            if (transform.position.z <= -45f)
+            if (transform.position.z <= -60f)
                 return;
 			transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
 		}
