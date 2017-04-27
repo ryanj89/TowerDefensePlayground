@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
-	private GameObject selectedTurret;          // Selected turret to build
+	private TurretBlueprint selectedTurret;          // Selected turret to build
 
     public GameObject turretPrefab;             // Turret prefab
     public GameObject missileLauncherPrefab;    // Missile Launcher prefab
 
+	// Reference for if a turret is selected
+	public bool CanBuild { get { return selectedTurret != null; }}
+
     // SINGLETON PATTERN
     public static BuildManager instance;
-
     void Awake()
     {
         if (instance != null)
@@ -22,14 +24,23 @@ public class BuildManager : MonoBehaviour
         instance = this;    // Reference to self
     }
 
-
-    // Public function to return selected turret
-    public GameObject GetSelectedTurret()
+    public void BuildTurretOnNode(Node node)
     {
-        return selectedTurret;
+        if (PlayerStats.Currency < selectedTurret.cost)
+        {
+            Debug.Log("Not enough money to puchase turret.");
+            return;
+        }
+
+        PlayerStats.Currency -= selectedTurret.cost;
+
+        GameObject turret = (GameObject)Instantiate(selectedTurret.prefab, node.GetTurretPosition(), Quaternion.identity);
+        node.turret = turret;
+
+        Debug.Log("Turret Purchased! Money: " + PlayerStats.Currency);
     }
 
-    public void SetSelectedTurret(GameObject turret)
+    public void SelectTurret(TurretBlueprint turret)
     {
         selectedTurret = turret;
     }

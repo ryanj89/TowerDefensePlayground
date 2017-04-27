@@ -5,10 +5,12 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour
 {
-    public Color hoverColor;
+	public Color hoverColor;
     public Vector3 turretPositionOffset;
 
-    private GameObject turret;
+    [Header("Optional")]
+	public GameObject turret;
+
     private Renderer rend;
     private Color nodeColor;
 
@@ -22,11 +24,19 @@ public class Node : MonoBehaviour
         buildManager = BuildManager.instance;
     }
 
+    public Vector3 GetTurretPosition()
+    {
+        return transform.position + turretPositionOffset;
+    }
+
     // Clicking a node
     void OnMouseDown()
     {
-        if (buildManager.GetSelectedTurret() == null || EventSystem.current.IsPointerOverGameObject())
-            return;
+		if (EventSystem.current.IsPointerOverGameObject())
+			return;
+
+		if (!buildManager.CanBuild)
+			return;
         
         // If turret is already placed...
         if (turret != null)
@@ -35,18 +45,17 @@ public class Node : MonoBehaviour
                 return;     // Early return
             }
 
-        // ...else, build turret
-		// Get selectedTurret from BuildManager instance
-		// Instantiate turret
-        GameObject selectedTurret = buildManager.GetSelectedTurret();
-        turret = (GameObject)Instantiate(selectedTurret, transform.position + turretPositionOffset, transform.rotation);
+        buildManager.BuildTurretOnNode(this);
     }
 
 	void OnMouseEnter()
 	{
-        if (buildManager.GetSelectedTurret() == null || EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject())
             return;
-
+        
+		if (!buildManager.CanBuild)
+			return;
+        
 		rend.material.color = hoverColor;
 	}
 
