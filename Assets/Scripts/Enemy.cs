@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
 
 		// Move toward direction at the normalized 'speed'
 		transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
-
+        transform.LookAt(nextWaypoint);
 		if (Vector3.Distance(transform.position, nextWaypoint.position)<= 0.2f)
 		{
 			GetNextWaypoint();
