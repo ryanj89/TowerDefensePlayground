@@ -6,11 +6,9 @@ public class BuildManager : MonoBehaviour
 {
 	private TurretBlueprint selectedTurret;          // Selected turret to build
 
-    public GameObject turretPrefab;             // Turret prefab
-    public GameObject missileLauncherPrefab;    // Missile Launcher prefab
-
 	// Reference for if a turret is selected
 	public bool CanBuild { get { return selectedTurret != null; }}
+    public bool CanPurchase { get { return PlayerStats.Currency >= selectedTurret.cost; }}
 
     // SINGLETON PATTERN
     public static BuildManager instance;

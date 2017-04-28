@@ -22,7 +22,7 @@ public class WaveSpawner : MonoBehaviour
 		}
 
 		timer -= Time.deltaTime;    // Decrease timer every second
-		waveCountdownText.text = "Timer: " + Mathf.Round(timer).ToString();
+		waveCountdownText.text = Mathf.Round(timer).ToString();
 	}
 
 	IEnumerator SpawnWave()

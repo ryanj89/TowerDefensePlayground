@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class Node : MonoBehaviour
 {
 	public Color hoverColor;
+    public Color cannotPurchaseColor;
     public Vector3 turretPositionOffset;
 
     [Header("Optional")]
@@ -29,25 +30,6 @@ public class Node : MonoBehaviour
         return transform.position + turretPositionOffset;
     }
 
-    // Clicking a node
-    void OnMouseDown()
-    {
-		if (EventSystem.current.IsPointerOverGameObject())
-			return;
-
-		if (!buildManager.CanBuild)
-			return;
-        
-        // If turret is already placed...
-        if (turret != null)
-            {
-                Debug.Log("Turret Already Placed! - TODO: Display Error on Screen");
-                return;     // Early return
-            }
-
-        buildManager.BuildTurretOnNode(this);
-    }
-
 	void OnMouseEnter()
 	{
         if (EventSystem.current.IsPointerOverGameObject())
@@ -55,12 +37,38 @@ public class Node : MonoBehaviour
         
 		if (!buildManager.CanBuild)
 			return;
-        
-		rend.material.color = hoverColor;
-	}
+
+        if (buildManager.CanPurchase)
+        {
+			rend.material.color = hoverColor;         
+        } else
+        {
+            rend.material.color = cannotPurchaseColor;
+        }
+    }
 
 	void OnMouseExit()
 	{
 		rend.material.color = nodeColor;
 	}
+
+	// Clicking a node
+	void OnMouseDown()
+	{
+		if (EventSystem.current.IsPointerOverGameObject())
+			return;
+
+		if (!buildManager.CanBuild)
+			return;
+
+		// If turret is already placed...
+		if (turret != null)
+		{
+			Debug.Log("Turret Already Placed! - TODO: Display Error on Screen");
+			return;     // Early return
+		}
+
+		buildManager.BuildTurretOnNode(this);
+	}
+
 }
